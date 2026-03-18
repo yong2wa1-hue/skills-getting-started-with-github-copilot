@@ -19,8 +19,8 @@ current_dir = Path(__file__).parent
 app.mount("/static", StaticFiles(directory=os.path.join(Path(__file__).parent,
           "static")), name="static")
 
-# In-memory activity database
-activities = {
+# Initial activities data
+DEFAULT_ACTIVITIES = {
     "Chess Club": {
         "description": "Learn strategies and compete in chess tournaments",
         "schedule": "Fridays, 3:30 PM - 5:00 PM",
@@ -76,6 +76,9 @@ activities = {
         "participants": ["maya@mergington.edu", "ethan@mergington.edu"]
     }
 }
+
+# In-memory activity database (mutable copy)
+activities = {k: {**v, "participants": v["participants"].copy()} for k, v in DEFAULT_ACTIVITIES.items()}
 
 
 @app.get("/")
